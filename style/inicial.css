@@ -13,7 +13,6 @@ body{
     display: flex;
     justify-content: center;
     align-items: center;
-    /* configurações para a imagem de fundo ocupar a tela toda */
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -21,39 +20,27 @@ body{
     min-height: 100vh;
 }
 .pagina img{
-    /* para a logo não sair da caixinha */
     max-width: 100%;
     height: auto;
     margin-bottom: 10px;
 }
 .Pagina{
     text-align: center;
-    /* transparência */
     background-color: rgba(0, 0, 0, 0.5);
-    /* impede que as bordas encostem nos cantos da tela */
     padding: 40px;
-    /* arredonda as bordas */
     border-radius: 20px;
-    /* flex container */
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    /* principalmente para mobile, para não colar nos cantos */
     width: 90%;
-    /* para não ficar com a logo desproporcional no desktop */
     max-width: 500px;
-    /* espaço entre a logo, o p e o botão */
     gap: 20px;
-    /* garante que o padding não aumente o tamanho do container */
     box-sizing: border-box;
 }
 .logo{
-    /* ocupa no máximo 80% da largura da tela em celulares */
     max-width: 80%;
-    /* Tamanho máximo fixo */
     width: 500px;
-    /* Mantém a proporção sem achatar a imagem da logo */
     height: auto;
     margin-bottom: 20px;
 }
