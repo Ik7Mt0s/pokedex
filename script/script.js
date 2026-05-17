@@ -274,6 +274,7 @@ async function executarBuscaExata() {
 
 async function iniciar() {
     configurarModal();
+    configurarFiltrosTipo();
     if (botaoBusca) botaoBusca.onclick = executarBuscaExata;
     if (campoBusca) {
         campoBusca.onkeypress = (e) => { if (e.key === 'Enter') executarBuscaExata(); };
@@ -286,5 +287,27 @@ async function iniciar() {
     pokemonAtual = await buscarListaPokemon(1025, 0);
     renderizarGrade(pokemonAtual, 'catalog-grid');
 }
+function filtrarPorTipo() {
+    const tipoSelecionado = document.querySelector('.type-filter.active')?.dataset.type || 'all';
+    if (tipoSelecionado === 'all') {
+        renderizarGrade(pokemonAtual, 'catalog-grid');
+        return;
+    }
+    const filtrados = pokemonAtual.filter(pokemon => {
+        const tiposPokemon = pokemon.types.map(t => t.type.name);
+        return tiposPokemon.includes(tipoSelecionado);
+    });
+    renderizarGrade(filtrados, 'catalog-grid');
+}
 
+function configurarFiltrosTipo() {
+    const botoes = document.querySelectorAll('.type-filter');
+    botoes.forEach(botao => {
+        botao.addEventListener('click', () => {
+            botoes.forEach(btn => btn.classList.remove('active'));
+            botao.classList.add('active');
+            filtrarPorTipo();
+        });
+    });
+}
 document.addEventListener('DOMContentLoaded', iniciar);
