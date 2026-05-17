@@ -3,20 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>POKEDEX MKIRG</title>
+    <title>Oak & Co. | Pokedex</title>
     <link rel="stylesheet" href="style/catalogo.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="https://imgs.search.brave.com/BdCUDXIaqTg0VNCvkE4so5hrvEW5yj-eiCHSqZ2jSzI/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9jZG4u/aWNvbnNjb3V0LmNv/bS9pY29uL3ByZW1p/dW0vcG5nLTI1Ni10/aHVtYi9wb2tlYm9s/YS1pY29uLXN2Zy1k/b3dubG9hZC1wbmct/MTA3Njg4MjkucG5n/P2Y9d2VicCZ3PTEy/OA">
-
 </head>
 <body>
-    <header class="pokedex-header">
-        <div class="pokedex-title">
-            <img src="pokeicon.png" alt="Pokédex">
-        </div>
-        <div class="search-container">
-            <input type="text" id="search-input" class="search-input" placeholder="Digite nome ou ID..." autocomplete="off" list="pokemon-suggestions">
-            <datalist id="pokemon-suggestions"></datalist>
-            <button id="search-btn" class="search-btn">Buscar</button>
+    <div class="vignette"></div>
+    <div class="film-grain"></div>
+
+    <header class="main-header">
+        <div class="header-container">
+            <div class="logo-area">
+                <img src="pokeicon.png" alt="Oak & Co." class="header-logo">
+                <span class="logo-text">Oak & Co.</span>
+            </div>
+            <div class="search-container">
+                <input type="text" id="search-input" class="search-input" placeholder="Digite nome ou ID..." autocomplete="off" list="pokemon-suggestions">
+                <datalist id="pokemon-suggestions"></datalist>
+                <button id="search-btn" class="search-btn">Buscar</button>
+            </div>
+            <nav class="main-nav">
+                <a href="index.html">Início</a>
+                <a href="produtos.html">Serviços</a>
+                <a href="instituicional.html">Instituição</a>
+                <a href="catalogo.html" class="active">Pokédex</a>
+            </nav>
         </div>
     </header>
 
@@ -58,6 +72,7 @@
             <div class="modal-body" id="modal-body"></div>
         </div>
     </div>
+
     <script src="script/catalogo.js" defer></script>
 </body>
 </html>

@@ -5,7 +5,7 @@ function iniciarNavegacao(event){
     botao.style.backgroundColor = "#2c3e50"
     botao.style.color = "#ecf0f1";
     setTimeout(function(){
-        window.location.href = "catalogo.html";
+        window.location.href = "produtos.html";
         botao.innerText = "Iniciar Busca"
         botao.style.backgroundColor = "transparent";
     }, 1000);
