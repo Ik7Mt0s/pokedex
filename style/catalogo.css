@@ -533,6 +533,31 @@ body {
     color: white;
 }
 
+.btn-favorito {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid #8a2be2;
+    border-radius: 40px;
+    padding: 10px 20px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    color: #b87cff;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-bottom: 15px;
+}
+
+.btn-favorito.ativo {
+    background: #8a2be2;
+    color: white;
+    border-color: #9b4dff;
+}
+
+.btn-favorito:hover {
+    background: #8a2be2;
+    color: white;
+    transform: scale(1.02);
+}
+
 .msg {
     text-align: center;
     padding: 30px;

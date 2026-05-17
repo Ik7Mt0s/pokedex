@@ -1,5 +1,6 @@
 const BASE_API = 'https://pokeapi.co/api/v2';
 let pokemonAtual = [];
+let pokemonFavoritos = JSON.parse(localStorage.getItem('meusFavoritos')) || [];
 
 function capitalizar(s) {
     return s.charAt(0).toUpperCase() + s.slice(1);
@@ -123,6 +124,39 @@ function filtrarPokemonPorTermo(termo) {
     renderizarGrade(filtrados, 'catalog-grid');
 }
 
+function atualizarTelaFavoritos() {
+    const section = document.getElementById('favorites-section');
+    if (!section) return;
+    if (pokemonFavoritos.length === 0) {
+        section.style.display = 'none';
+    } else {
+        section.style.display = 'block';
+        const favoritados = pokemonAtual.filter(p => pokemonFavoritos.includes(p.id));
+        renderizarGrade(favoritados, 'favorites-grid');
+    }
+}
+
+function alternarFavorito(pokemon) {
+    const index = pokemonFavoritos.indexOf(pokemon.id);
+    if (index === -1) {
+        pokemonFavoritos.push(pokemon.id);
+    } else {
+        pokemonFavoritos.splice(index, 1);
+    }
+    localStorage.setItem('meusFavoritos', JSON.stringify(pokemonFavoritos));
+    atualizarTelaFavoritos();
+    const favoritarBtn = document.getElementById('btn-favorito');
+    if (favoritarBtn) {
+        const ehFavorito = pokemonFavoritos.includes(pokemon.id);
+        favoritarBtn.textContent = ehFavorito ? '⭐ Remover dos Favoritos' : '⭐ Adicionar aos Favoritos';
+        if (ehFavorito) {
+            favoritarBtn.classList.add('ativo');
+        } else {
+            favoritarBtn.classList.remove('ativo');
+        }
+    }
+}
+
 async function abrirModal(pokemon) {
     const overlay = document.getElementById('modal-overlay');
     if (!overlay) return;
@@ -150,6 +184,7 @@ async function abrirModal(pokemon) {
 
     const temShiny = !!pokemon.sprites.other?.['official-artwork']?.front_shiny || !!pokemon.sprites.front_shiny;
     const imagemShinyAlta = pokemon.sprites.other?.['official-artwork']?.front_shiny || pokemon.sprites.front_shiny || imagemAlta;
+    const ehFavorito = pokemonFavoritos.includes(pokemon.id);
 
     const corpoModal = document.getElementById('modal-body');
     if (corpoModal) {
@@ -159,8 +194,12 @@ async function abrirModal(pokemon) {
             </div>
             <div class="modal-id">#${String(pokemon.id).padStart(3, '0')}</div>
             <div class="modal-name">${capitalizar(pokemon.name)}</div>
+            <div style="text-align: center; margin-bottom: 15px;">
+                <button id="btn-favorito" class="btn-favorito ${ehFavorito ? 'ativo' : ''}">
+                    ${ehFavorito ? '⭐ Remover dos Favoritos' : '⭐ Adicionar aos Favoritos'}
+                </button>
+            </div>
             <div class="modal-types">${tiposHtml}</div>
-
             <div class="modal-info-grid">
                 <div class="info-box">
                     <div class="info-label">Altura</div>
@@ -171,7 +210,6 @@ async function abrirModal(pokemon) {
                     <div class="info-value">${(pokemon.weight / 10).toFixed(1)}<span class="info-unit">kg</span></div>
                 </div>
             </div>
-
             <div class="modal-stats">
                 <div class="stats-title">Estatísticas Base</div>
                 ${pokemon.stats.map(stat => {
@@ -189,18 +227,21 @@ async function abrirModal(pokemon) {
                     `;
                 }).join('')}
             </div>
-
             ${temShiny ? `
             <div class="form-tabs">
                 <button class="form-tab active" data-sprite-normal="${imagemAlta}" data-sprite-shiny="${imagemShinyAlta}">Normal</button>
                 <button class="form-tab" data-sprite-normal="${imagemAlta}" data-sprite-shiny="${imagemShinyAlta}">Shiny</button>
             </div>` : ''}
-
             <div style="margin-top:20px;">
                 <div class="stats-title">Cadeia Evolutiva</div>
                 ${htmlEvo}
             </div>
         `;
+    }
+
+    const favoritoBtn = document.getElementById('btn-favorito');
+    if (favoritoBtn) {
+        favoritoBtn.onclick = () => alternarFavorito(pokemon);
     }
 
     const normalBtn = document.querySelector('.form-tab:first-child');
@@ -255,6 +296,30 @@ function configurarModal() {
     }
 }
 
+function filtrarPorTipo() {
+    const tipoSelecionado = document.querySelector('.type-filter.active')?.dataset.type || 'all';
+    if (tipoSelecionado === 'all') {
+        renderizarGrade(pokemonAtual, 'catalog-grid');
+        return;
+    }
+    const filtrados = pokemonAtual.filter(pokemon => {
+        const tiposPokemon = pokemon.types.map(t => t.type.name);
+        return tiposPokemon.includes(tipoSelecionado);
+    });
+    renderizarGrade(filtrados, 'catalog-grid');
+}
+
+function configurarFiltrosTipo() {
+    const botoes = document.querySelectorAll('.type-filter');
+    botoes.forEach(botao => {
+        botao.addEventListener('click', () => {
+            botoes.forEach(btn => btn.classList.remove('active'));
+            botao.classList.add('active');
+            filtrarPorTipo();
+        });
+    });
+}
+
 const campoBusca = document.getElementById('search-input');
 const botaoBusca = document.getElementById('search-btn');
 
@@ -286,28 +351,7 @@ async function iniciar() {
     if (grade) grade.innerHTML = '<div class="msg">Carregando Pokémon...</div>';
     pokemonAtual = await buscarListaPokemon(1025, 0);
     renderizarGrade(pokemonAtual, 'catalog-grid');
-}
-function filtrarPorTipo() {
-    const tipoSelecionado = document.querySelector('.type-filter.active')?.dataset.type || 'all';
-    if (tipoSelecionado === 'all') {
-        renderizarGrade(pokemonAtual, 'catalog-grid');
-        return;
-    }
-    const filtrados = pokemonAtual.filter(pokemon => {
-        const tiposPokemon = pokemon.types.map(t => t.type.name);
-        return tiposPokemon.includes(tipoSelecionado);
-    });
-    renderizarGrade(filtrados, 'catalog-grid');
+    atualizarTelaFavoritos();
 }
 
-function configurarFiltrosTipo() {
-    const botoes = document.querySelectorAll('.type-filter');
-    botoes.forEach(botao => {
-        botao.addEventListener('click', () => {
-            botoes.forEach(btn => btn.classList.remove('active'));
-            botao.classList.add('active');
-            filtrarPorTipo();
-        });
-    });
-}
 document.addEventListener('DOMContentLoaded', iniciar);
