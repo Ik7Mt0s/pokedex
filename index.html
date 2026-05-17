@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>POKEDEX MKIRG</title>
     <link rel="stylesheet" href="style/style.css">
-    <script src="script/script.js" defer></script>
-<base target="_blank">
 </head>
 <body>
     <header class="pokedex-header">
@@ -14,7 +12,8 @@
             <img src="pokeicon.png" alt="Pokédex">
         </div>
         <div class="search-container">
-            <input type="text" id="search-input" class="search-input" placeholder="Digite nome ou ID..." autocomplete="off">
+            <input type="text" id="search-input" class="search-input" placeholder="Digite nome ou ID..." autocomplete="off" list="pokemon-suggestions">
+            <datalist id="pokemon-suggestions"></datalist>
             <button id="search-btn" class="search-btn">Buscar</button>
         </div>
     </header>
@@ -57,7 +56,6 @@
             <div class="modal-body" id="modal-body"></div>
         </div>
     </div>
-
-    <script src="script/catalogo.js"></script>
+    <script src="script/script.js" defer></script>
 </body>
 </html>
