@@ -117,7 +117,7 @@ body {
 
 .pokemon-card:hover {
     transform: translateY(-6px);
-    box-shadow: 0 18px 28px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 18px 30px rgba(137, 43, 226, 0.137), 0 0 0 1px rgba(137, 43, 226, 0.5);
 }
 
 .pokemon-id {
